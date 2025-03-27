@@ -32,14 +32,15 @@ export default defineConfig({
         },
     },
     build: {
+        outDir: 'docs',
+        assetsDir: 'assets',
+        emptyOutDir: true,
         rollupOptions: {
             output: {
                 assetFileNames: (assetInfo) => {
                     if (
-                        assetInfo.names &&
-                        assetInfo.originalFileNames.some((name) =>
-                            name.startsWith('src/assets/templates/')
-                        )
+                        assetInfo.name &&
+                        /\.(png|jpe?g|gif|svg|ico)$/.test(assetInfo.name)
                     ) {
                         return 'assets/[name][extname]';
                     }

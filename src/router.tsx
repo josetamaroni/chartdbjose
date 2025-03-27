@@ -4,22 +4,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import type { TemplatePageLoaderData } from './pages/template-page/template-page';
 import type { TemplatesPageLoaderData } from './pages/templates-page/templates-page';
 import { getTemplatesAndAllTags } from './templates-data/template-utils';
-
-const HydrationFallback = () => (
-    <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        width: '100vw',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        backgroundColor: 'white'
-    }}>
-        <div>Loading...</div>
-    </div>
-);
+import { LoadingFallback } from './components/loading-fallback/loading-fallback';
+import { RootLayout } from './components/root-layout/root-layout';
 
 const routes: RouteObject[] = [
     ...['', 'diagrams/:diagramId'].map((path) => ({
@@ -167,16 +153,19 @@ const routes: RouteObject[] = [
     },
 ];
 
-export const router = createBrowserRouter([
+export const router = createBrowserRouter(
+    [
+        {
+            path: '/',
+            element: <RootLayout />,
+            errorElement: <LoadingFallback />,
+            children: routes.map((route) => ({
+                ...route,
+                errorElement: <LoadingFallback />,
+            })),
+        },
+    ],
     {
-        path: '/',
-        element: null,
-        hydrateFallbackElement: <HydrationFallback />,
-        children: routes.map(route => ({
-            ...route,
-            hydrateFallbackElement: <HydrationFallback />
-        }))
+        basename: '/chartdbjose',
     }
-], {
-    basename: '/chartdbjose'
-});
+);
