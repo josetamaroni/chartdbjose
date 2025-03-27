@@ -167,9 +167,16 @@ const routes: RouteObject[] = [
     },
 ];
 
-export const router = createBrowserRouter(routes.map(route => ({
-    ...route,
-    HydrateFallback: HydrationFallback
-})), {
+export const router = createBrowserRouter([
+    {
+        path: '/',
+        element: null,
+        hydrateFallbackElement: <HydrationFallback />,
+        children: routes.map(route => ({
+            ...route,
+            hydrateFallbackElement: <HydrationFallback />
+        }))
+    }
+], {
     basename: '/chartdbjose'
 });

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
 import { TooltipProvider } from './components/tooltip/tooltip';
@@ -22,22 +22,12 @@ const LoadingFallback = () => (
 );
 
 export const App = () => {
-    const [isHydrated, setIsHydrated] = useState(false);
-
-    useEffect(() => {
-        setIsHydrated(true);
-    }, []);
-
     return (
         <HelmetProvider>
             <HelmetData />
             <TooltipProvider>
                 <Suspense fallback={<LoadingFallback />}>
-                    {isHydrated ? (
-                        <RouterProvider router={router} />
-                    ) : (
-                        <LoadingFallback />
-                    )}
+                    <RouterProvider router={router} />
                 </Suspense>
             </TooltipProvider>
         </HelmetProvider>
