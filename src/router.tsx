@@ -5,6 +5,22 @@ import type { TemplatePageLoaderData } from './pages/template-page/template-page
 import type { TemplatesPageLoaderData } from './pages/templates-page/templates-page';
 import { getTemplatesAndAllTags } from './templates-data/template-utils';
 
+const HydrationFallback = () => (
+    <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        width: '100vw',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        backgroundColor: 'white'
+    }}>
+        <div>Loading...</div>
+    </div>
+);
+
 const routes: RouteObject[] = [
     ...['', 'diagrams/:diagramId'].map((path) => ({
         path,
@@ -151,4 +167,9 @@ const routes: RouteObject[] = [
     },
 ];
 
-export const router = createBrowserRouter(routes);
+export const router = createBrowserRouter(routes.map(route => ({
+    ...route,
+    HydrateFallback: HydrationFallback
+})), {
+    basename: '/chartdbjose'
+});
